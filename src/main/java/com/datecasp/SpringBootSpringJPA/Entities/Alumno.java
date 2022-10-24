@@ -1,4 +1,4 @@
-package com.datecasp.SpringBootSpringJPA;
+package com.datecasp.SpringBootSpringJPA.Entities;
 
 import javax.persistence.*;
 
@@ -15,10 +15,10 @@ public class Alumno
 
     //Constructores
 
-    public Alumno(String _nombre, Integer _curso)
+    public Alumno(String nombre, Integer curso)
     {
-        this.nombre = _nombre;
-        this.curso = _curso;
+        this.nombre = nombre;
+        this.curso = curso;
     }
 
     public Alumno() { }

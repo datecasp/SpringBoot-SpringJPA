@@ -1,5 +1,7 @@
 package com.datecasp.SpringBootSpringJPA;
 
+import com.datecasp.SpringBootSpringJPA.Entities.Alumno;
+import com.datecasp.SpringBootSpringJPA.Repositories.AlumnoRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
