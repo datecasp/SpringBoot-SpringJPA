@@ -1,59 +1,58 @@
 package com.datecasp.SpringBootSpringJPA;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "Alumnos")
 public class Alumno
 {
     //Atributos
     @Id
-    @GeneratedValue
-    private Long _id;
-    private String _nombre;
-    private Integer _curso;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nombre;
+    private Integer curso;
 
     //Constructores
 
     public Alumno(String _nombre, Integer _curso)
     {
-        this._nombre = _nombre;
-        this._curso = _curso;
+        this.nombre = _nombre;
+        this.curso = _curso;
     }
 
     public Alumno() { }
 
     //Getters y Setters
 
-    public Long get_id()
+    public Long getId()
     {
-        return _id;
+        return id;
     }
 
-    public void set_id(Long _id)
+    public void setId(Long id)
     {
-        this._id = _id;
+        this.id = id;
     }
 
-    public String get_nombre()
+    public String getNombre()
     {
-        return _nombre;
+        return nombre;
     }
 
-    public void set_nombre(String _nombre)
+    public void setNombre(String nombre)
     {
-        this._nombre = _nombre;
+        this.nombre = nombre;
     }
 
-    public Integer get_curso()
+    public Integer getCurso()
     {
-        return _curso;
+        return curso;
     }
 
-    public void set_curso(Integer _curso)
+    public void setCurso(Integer curso)
     {
-        this._curso = _curso;
+        this.curso = curso;
     }
 
     //ToString
@@ -62,9 +61,9 @@ public class Alumno
     public String toString()
     {
         return "Alumno{" +
-                "_id=" + _id +
-                ", _nombre='" + _nombre + '\'' +
-                ", _curso=" + _curso +
+                "_id=" + id +
+                ", _nombre='" + nombre + '\'' +
+                ", _curso=" + curso +
                 '}';
     }
 }
