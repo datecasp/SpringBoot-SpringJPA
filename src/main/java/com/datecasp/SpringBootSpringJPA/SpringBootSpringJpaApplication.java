@@ -16,9 +16,9 @@ public class SpringBootSpringJpaApplication {
 		AlumnoRepository alumnosRepo = context.getBean(AlumnoRepository.class);
 
 		alumnosRepo.save(new Alumno("Alebrto", 1));
+		alumnosRepo.save(new Alumno("Juan", 1));
+		alumnosRepo.save(new Alumno("Federico", 2));
 
-		System.out.println(alumnosRepo.findAll());
-		System.out.println(alumnosRepo.count());
 	}
 
 }

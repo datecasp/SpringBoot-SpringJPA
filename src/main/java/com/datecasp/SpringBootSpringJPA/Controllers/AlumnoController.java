@@ -1,8 +1,10 @@
 package com.datecasp.SpringBootSpringJPA.Controllers;
 
+import com.datecasp.SpringBootSpringJPA.Exceptions.AlumnoNotFoundException;
 import com.datecasp.SpringBootSpringJPA.Repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.Entities.Alumno;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,4 +33,19 @@ public class AlumnoController
     {
         return alumnoRepository.findAll();
     }
+
+    /**
+     *  GET Un alumno concreto por su Id
+     *
+     *  http://localhost:8080/api/Alumnos/AlumnoPorId
+     *
+     *  Devuelve un alumno
+     **/
+    @GetMapping("api/Alumnos/AlumnoPorId/{id}")
+    Alumno onalumno(@PathVariable Long id) {
+
+        return alumnoRepository.findById(id)
+                .orElseThrow(() -> new AlumnoNotFoundException(id));
+    }
+
 }
