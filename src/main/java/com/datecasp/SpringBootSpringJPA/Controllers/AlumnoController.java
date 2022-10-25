@@ -3,9 +3,11 @@ package com.datecasp.SpringBootSpringJPA.Controllers;
 import com.datecasp.SpringBootSpringJPA.Exceptions.AlumnoNotFoundException;
 import com.datecasp.SpringBootSpringJPA.Repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.Entities.Alumno;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AlumnoController
@@ -37,18 +39,58 @@ public class AlumnoController
      *
      *  http://localhost:8080/api/Alumnos/AlumnoPorId
      *
-     *  Devuelve un alumno
+     *  Devuelve un ResponseEntity<Alumno>
      **/
     @GetMapping("/api/Alumnos/AlumnoPorId/{id}")
-    public Alumno FindById(@PathVariable Long id) {
+    public ResponseEntity<Alumno> FindById(@PathVariable Long id) {
 
-        return alumnoRepository.findById(id)
-                .orElseThrow(() -> new AlumnoNotFoundException(id));
+        Optional<Alumno> aluOpt= alumnoRepository.findById(id);
+        if(aluOpt.isPresent())
+        {
+            return ResponseEntity.ok(aluOpt.get());
+        }
+        else
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    /**
+     *  Updte Un alumno concreto por su Id
+     *
+     *  http://localhost:8080/api/Alumnos/ActualizarAlumno/{id}
+     *
+     *  Devuelve un ResponseEntity<Alumno>
+     **/
+    @PutMapping("/api/Alumnos/ActualizarAlumno")
+    public ResponseEntity<Alumno> Updatelumnos(@RequestBody Alumno alumno)
+    {
+        //Si no existe el id, no es PUT si no POST 400
+        if(alumno.getId() == null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+        //Si el alumno no existe, no es PUT si no POST 404
+        if(!alumnoRepository.existsById(alumno.getId()))
+        {
+            return ResponseEntity.notFound().build();
+        }
+        //Si el alumno existe, lo actualizamos en bbdd
+        Alumno result = alumnoRepository.save(alumno);
+        //Devuelvo un ok 200 con el alumno
+        return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/api/Alumnos/GuardarAlumnos")
-    public Alumno CreateAlumnos(@RequestBody Alumno alumno)
+    @DeleteMapping("/api/Alumnos/BorrarAlumno/{id}")
+    public ResponseEntity<Alumno> DeleteAlumno(@PathVariable Long id)
     {
-        return alumnoRepository.save(alumno);
+        //Si no existe el alumno, 404
+        if(!alumnoRepository.existsById(id))
+        {
+            return ResponseEntity.notFound().build();
+        }
+        //Si existe el alumno, lo borramos
+        alumnoRepository.deleteById(id);
+        //Devolvemos No content 204
+        return ResponseEntity.noContent().build();
     }
 }
