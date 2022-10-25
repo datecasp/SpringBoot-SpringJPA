@@ -54,6 +54,28 @@ public class AlumnoController
             return ResponseEntity.notFound().build();
         }
     }
+
+    /**
+     *  Post Un alumno concreto
+     *
+     *  http://localhost:8080/api/Alumnos/CrearAlumno
+     *
+     *  Devuelve un ResponseEntity<Alumno>
+     **/
+    @PostMapping("/api/Alumnos/CrearAlumno")
+    public ResponseEntity<Alumno> CreateAlumno(@RequestBody Alumno alumno)
+    {
+        //Si meten id, badrequest 400
+        if (alumno.getId() != null)
+        {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Alumno result = alumnoRepository.save(alumno);
+
+        return ResponseEntity.ok(result);
+    }
+
     /**
      *  Updte Un alumno concreto por su Id
      *
