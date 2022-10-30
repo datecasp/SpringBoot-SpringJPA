@@ -1,4 +1,4 @@
-package com.datecasp.SpringBootSpringJPA.Entities;
+package com.datecasp.SpringBootSpringJPA.entities;
 
 import javax.persistence.*;
 

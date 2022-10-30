@@ -1,6 +1,6 @@
-package com.datecasp.SpringBootSpringJPA.Repositories;
+package com.datecasp.SpringBootSpringJPA.repositories;
 
-import com.datecasp.SpringBootSpringJPA.Entities.Alumno;
+import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

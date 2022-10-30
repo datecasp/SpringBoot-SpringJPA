@@ -1,8 +1,8 @@
-package com.datecasp.SpringBootSpringJPA.Controllers;
+package com.datecasp.SpringBootSpringJPA.controllers;
 
-import com.datecasp.SpringBootSpringJPA.Exceptions.AlumnoNotFoundException;
-import com.datecasp.SpringBootSpringJPA.Repositories.AlumnoRepository;
-import com.datecasp.SpringBootSpringJPA.Entities.Alumno;
+import com.datecasp.SpringBootSpringJPA.exceptions.AlumnoNotFoundException;
+import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
+import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

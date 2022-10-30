@@ -1,4 +1,4 @@
-package com.datecasp.SpringBootSpringJPA.Exceptions;
+package com.datecasp.SpringBootSpringJPA.exceptions;
 
 public class AlumnoNotFoundException extends RuntimeException {
 
