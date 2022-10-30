@@ -1,6 +1,5 @@
 package com.datecasp.SpringBootSpringJPA.controllers;
 
-import com.datecasp.SpringBootSpringJPA.exceptions.AlumnoNotFoundException;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import org.springframework.http.ResponseEntity;
