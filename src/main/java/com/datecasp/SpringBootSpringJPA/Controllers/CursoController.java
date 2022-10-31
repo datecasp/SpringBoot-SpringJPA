@@ -5,6 +5,7 @@ import com.datecasp.SpringBootSpringJPA.entities.Curso;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,15 +69,23 @@ public class CursoController
     /**
      *  GET Buscar todos los alumnos de un curso
      *
-     * @param cursoId
+     * @param cursoId, activo
      *
      *  http://localhost:8080/api/Cursos/AlumnadoCurso/{cursoId}
+     *
+     *  Utiliza el cursoId para devolver el alumnado que tiene asigando
+     *
+     *  El param activo se usa para filtrar la respuesta por
+     *
+     *        true -> devuelve sólo los alumnos actuales del curso
+     *
+     *        false -> Añade alumnado que hizo el curso pero ya está dado de baja
      *
      *  return ResponseEntity<List<Alumno>>
      */
     @GetMapping("/api/Cursos/AlumnadoCurso/{cursoId}")
     @ApiOperation("Devuelve todo el alumnado de un curso, dado su Id")
-    public ResponseEntity<List<Alumno>> getAlumnadoCurso(@PathVariable Long cursoId )
+    public ResponseEntity<List<Alumno>> getAlumnadoCurso(@PathVariable Long cursoId, @ApiParam(value = "Sólo actual") Boolean activo)
     {
         Optional<List<Alumno>> aluListOpt= Optional.of(alumnoRepository.findAll());
         List<Alumno> aluList= new ArrayList<>();
@@ -85,7 +94,13 @@ public class CursoController
         {
             for (Alumno alu : aluListOpt.get())
             {
-                if(alu.getCurso().getId() == cursoId){aluList.add(alu);}
+                if(!activo)
+                {
+                    if(alu.getCurso().getId() == cursoId){aluList.add(alu);}
+                }else if((alu.getCurso().getId() == cursoId) && alu.getActivo())
+                {
+                    aluList.add(alu);
+                }
             }
             if(aluList.isEmpty()){return ResponseEntity.noContent().build();}
             return ResponseEntity.ok(aluList);

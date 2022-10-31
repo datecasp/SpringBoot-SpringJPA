@@ -1,9 +1,11 @@
 package com.datecasp.SpringBootSpringJPA.controllers;
 
+import com.datecasp.SpringBootSpringJPA.entities.Curso;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,6 +117,36 @@ public class AlumnoController
         return ResponseEntity.ok(aluViejo.get());
     }
 
+    /**
+     *  Updte El curso de un alumno concreto por su Id
+     *
+     *  http://localhost:8080/api/Alumnos/ActualizarCursoAlumno/{id}
+     *
+     *  Si el alumno estaba ya en un curso, le cambia de curso
+     *
+     *  Si el alumno no estaba en un curso, Activo = false,
+     *
+     *  cambio Activo a true y el curso del alumno
+     *
+     *  Devuelve un ResponseEntity<Alumno>
+     **/
+    @PutMapping("/api/Alumnos/ActualizarCursoAlumno/{alumnoId}")
+    @ApiOperation("Apuntar o cambiar de curso a un alumno")
+    public ResponseEntity<Alumno> UpdateCursoAlumno(@PathVariable Long alumnoId, Long cursoId)
+    {
+        Optional<Alumno> alumno = alumnoRepository.findById(alumnoId);
+        Optional<Curso> curso = cursoRepository.findById(cursoId);
+
+        if(!alumno.isPresent()||!curso.isPresent()){return ResponseEntity.badRequest().build();}
+        //Seteamos Activo a true por si no lo está
+        alumno.get().setActivo(true);
+        //Cargamos el curso nuevo en el Alumno
+        alumno.get().setCurso(curso.get());
+        //Guardamos los cambios en DB
+        alumnoRepository.flush();
+
+        return ResponseEntity.ok(alumno.get());
+    }
     @DeleteMapping("/api/Alumnos/BorrarAlumno/{alumnoId}")
     @ApiOperation("Inactiva un alumno, dada su id")
     public ResponseEntity<Alumno> DeleteAlumno(@PathVariable Long alumnoId)
