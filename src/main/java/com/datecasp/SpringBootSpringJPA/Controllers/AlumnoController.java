@@ -46,11 +46,11 @@ public class AlumnoController
      *
      *  Devuelve un ResponseEntity<Alumno>
      **/
-    @GetMapping("/api/Alumnos/AlumnoPorId/{id}")
+    @GetMapping("/api/Alumnos/AlumnoPorId/{alumnoId}")
     @ApiOperation("Devuelve un alumno, dada su Id")
-    public ResponseEntity<Alumno> FindById(@PathVariable Long id) {
+    public ResponseEntity<Alumno> FindById(@PathVariable Long alumnoId) {
 
-        Optional<Alumno> aluOpt= alumnoRepository.findById(id);
+        Optional<Alumno> aluOpt= alumnoRepository.findById(alumnoId);
         if(aluOpt.isPresent())
         {
             return ResponseEntity.ok(aluOpt.get());
@@ -77,7 +77,11 @@ public class AlumnoController
         {
             return ResponseEntity.badRequest().build();
         }
+        //Asignamos Curso a Alumno
         alumno.setCurso(cursoRepository.getById(cursoId));
+        //Seteamos Activo como true
+        alumno.setActivo(true);
+        //Guardamos el Alumno en la DB
         Alumno result = alumnoRepository.save(alumno);
 
         return ResponseEntity.ok(result);
@@ -91,7 +95,7 @@ public class AlumnoController
      *  Devuelve un ResponseEntity<Alumno>
      **/
     @PutMapping("/api/Alumnos/ActualizarAlumno/{alumnoId}")
-    @ApiOperation("Actualiza un alumno, las ids deben coincidir")
+    @ApiOperation("Actualiza un alumno")
     public ResponseEntity<Alumno> UpdateAlumno(@PathVariable Long alumnoId, @RequestBody Alumno alumno)
     {
         Optional<Alumno> aluViejo = alumnoRepository.findById(alumnoId);
@@ -105,23 +109,30 @@ public class AlumnoController
         {
             aluViejo.get().setNombre(alumno.getNombre());
         }
-        //Actualizamos el valor del Alumno
+        //Actualizamos el valor del Alumno en la DB
         alumnoRepository.flush();
         //Devuelvo un ok 200 con el alumno
         return ResponseEntity.ok(alumno);
     }
 
-    @DeleteMapping("/api/Alumnos/BorrarAlumno/{id}")
-    @ApiOperation("Borra un alumno, dada su id")
-    public ResponseEntity<Alumno> DeleteAlumno(@PathVariable Long id)
+    @DeleteMapping("/api/Alumnos/BorrarAlumno/{alumnoId}")
+    @ApiOperation("Inactiva un alumno, dada su id")
+    public ResponseEntity<Alumno> DeleteAlumno(@PathVariable Long alumnoId)
     {
+        Optional<Alumno> aluViejo = alumnoRepository.findById(alumnoId);
+
         //Si no existe el alumno, 404
-        if(!alumnoRepository.existsById(id))
+        if(!alumnoRepository.existsById(alumnoId))
         {
             return ResponseEntity.notFound().build();
         }
-        //Si existe el alumno, lo borramos
-        alumnoRepository.deleteById(id);
+        else
+        {
+            //Ponemos el flag "Activo" en false
+            aluViejo.get().setActivo(false);
+            //Guardamos el cambio en la DB
+            cursoRepository.flush();
+        }
         //Devolvemos No content 204
         return ResponseEntity.noContent().build();
     }

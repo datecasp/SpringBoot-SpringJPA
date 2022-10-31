@@ -17,18 +17,22 @@ public class Alumno
     @Column(name = "nombre")
     private String nombre;
 
+    //Activo indica si el alumno está o no en un curso
+    @Column(name = "activo")
+    private Boolean activo;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "cursoId")
+    @JoinColumn(name = "cursoId", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Curso curso;
 
     //Constructores
-
     public Alumno(String nombre, Curso curso)
     {
         this.nombre = nombre;
         this.curso = curso;
+        this.activo = true;
     }
 
     public Alumno() { }
@@ -65,7 +69,16 @@ public class Alumno
         this.curso = curso;
     }
 
-    //ToString
+    public Boolean getActivo()
+    {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo)
+    {
+        this.activo = activo;
+    }
+//ToString
 
     @Override
     public String toString()
