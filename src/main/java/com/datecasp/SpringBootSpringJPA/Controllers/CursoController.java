@@ -2,10 +2,12 @@ package com.datecasp.SpringBootSpringJPA.controllers;
 
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import com.datecasp.SpringBootSpringJPA.entities.Curso;
+import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +17,19 @@ public class CursoController
 
     //Atributo para tener acceso al contexto
     private CursoRepository cursoRepository;
+    //Para poder buscar alumndao desde un Curso
+    private AlumnoRepository alumnoRepository;
 
     //Constructor con el contexto inyectado
-    public CursoController(CursoRepository cursoRepository)
+    //public CursoController(CursoRepository cursoRepository)
     {
         this.cursoRepository = cursoRepository;
+    }
+
+    public CursoController(CursoRepository cursoRepository, AlumnoRepository alumnoRepository)
+    {
+        this.cursoRepository = cursoRepository;
+        this.alumnoRepository = alumnoRepository;
     }
 
     /**
@@ -49,6 +59,36 @@ public class CursoController
         if(cursoOpt.isPresent())
         {
             return ResponseEntity.ok(cursoOpt.get());
+        }
+        else
+        {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     *  GET Buscar todos los alumnos de un curso
+     *
+     * @param cursoId
+     *
+     *  http://localhost:8080/api/Cursos/AlumnadoCurso/{cursoId}
+     *
+     *  return ResponseEntity<List<Alumno>>
+     */
+    @GetMapping("/api/Cursos/AlumnadoCurso/{cursoId}")
+    public ResponseEntity<List<Alumno>> getAlumnadoCurso(@PathVariable Long cursoId )
+    {
+        Optional<List<Alumno>> aluListOpt= Optional.of(alumnoRepository.findAll());
+        List<Alumno> aluList= new ArrayList<>();
+
+        if(aluListOpt.isPresent())
+        {
+            for (Alumno alu : aluListOpt.get())
+            {
+                if(alu.getCurso().getCursoId() == cursoId){aluList.add(alu);}
+            }
+            if(aluList.isEmpty()){return ResponseEntity.notFound().build();}
+            return ResponseEntity.ok(aluList);
         }
         else
         {
