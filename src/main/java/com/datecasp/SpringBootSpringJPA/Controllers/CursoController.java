@@ -5,8 +5,6 @@ import com.datecasp.SpringBootSpringJPA.entities.Curso;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import io.swagger.annotations.ApiOperation;
-import jdk.jfr.Name;
-import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +29,11 @@ public class CursoController
     }
 
     /**
-     *  GET Todos los alumnos
+     *  GET Todos los cursos
      *
-     *  http://localhost:8080/api/Alumnos/TodosLosAlumnos
+     *  http://localhost:8080/api/Cursos/TodosLosCursos
      *
-     *  Devuelve una lista con todos los alumnos
+     *  Devuelve una lista con todos los cursos
      **/
     @GetMapping("/api/Cursos/TodosLosCursos")
     @ApiOperation("Devuelve todos los cursos")
@@ -46,11 +44,11 @@ public class CursoController
     }
 
     /**
-     *  GET Un alumno concreto por su Id
+     *  GET Un curso concreto por su Id
      *
-     *  http://localhost:8080/api/Alumnos/AlumnoPorId
+     *  http://localhost:8080/api/Cursos/CursoPorId
      *
-     *  Devuelve un ResponseEntity<Alumno>
+     *  Devuelve un ResponseEntity<Curso>
      **/
     @GetMapping("/api/Cursos/CursoPorId/{id}")
     @ApiOperation("Devuelve un curso por su Id")
@@ -87,7 +85,7 @@ public class CursoController
         {
             for (Alumno alu : aluListOpt.get())
             {
-                if(alu.getCurso().getCursoId() == cursoId){aluList.add(alu);}
+                if(alu.getCurso().getId() == cursoId){aluList.add(alu);}
             }
             if(aluList.isEmpty()){return ResponseEntity.notFound().build();}
             return ResponseEntity.ok(aluList);
@@ -110,7 +108,7 @@ public class CursoController
     public ResponseEntity<Curso> CreateCurso(@RequestBody Curso curso)
     {
         //Si meten id, badrequest 400
-        if (curso.getCursoId() != null)
+        if (curso.getId() != null)
         {
             return ResponseEntity.badRequest().build();
         }
@@ -128,25 +126,28 @@ public class CursoController
      *  Devuelve un ResponseEntity<Curso>
      **/
     @PutMapping("/api/Cursos/ActualizarCurso/{cursoId}")
-    @ApiOperation("Actualiza un curso, las ids deben coincidir")
+    @ApiOperation("Actualiza un curso")
     public ResponseEntity<Curso> UpdateCurso(@PathVariable Long cursoId, @RequestBody Curso curso)
     {
-        //Comprobamos los Ids
-        if (cursoId != curso.getCursoId()){ return ResponseEntity.badRequest().build(); }
-        //Si no existe el id, no es PUT si no POST 400
-        if(curso.getCursoId() == null)
-        {
-            return ResponseEntity.badRequest().build();
-        }
+        Optional<Curso> cursoViejo =cursoRepository.findById(cursoId);
+
         //Si el curso no existe, no es PUT si no POST 404
-        if(!cursoRepository.existsById(curso.getCursoId()))
+        if(!cursoRepository.existsById(cursoId))
         {
             return ResponseEntity.notFound().build();
         }
-        //Si el curso existe, lo actualizamos en bbdd
-        Curso result = cursoRepository.save(curso);
-        //Devuelvo un ok 200 con el alumno
-        return ResponseEntity.ok(result);
+        else
+        {
+            cursoViejo.get().setCurso(curso.getCurso());
+            cursoViejo.get().setDescripcion(curso.getDescripcion());
+            cursoViejo.get().setNivelCurso(curso.getNivelCurso());
+
+            //Actualizamos el valor del Curso en la DB
+            alumnoRepository.flush();
+        }
+
+        //Devuelvo un ok 200 con el curso
+        return ResponseEntity.ok(cursoViejo.get());
     }
 
     @DeleteMapping("/api/Cursos/BorrarCurso/{id}")

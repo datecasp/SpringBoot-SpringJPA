@@ -4,7 +4,6 @@ import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,14 +104,15 @@ public class AlumnoController
         {
             return ResponseEntity.notFound().build();
         }
-        else
-        {
+        else {
+            //Seteamos en el objeto de la DB los parametros pasados en la respuesta
             aluViejo.get().setNombre(alumno.getNombre());
+            aluViejo.get().setActivo(alumno.getActivo());
+            //Actualizamos el valor del Alumno en la DB
+            alumnoRepository.flush();
         }
-        //Actualizamos el valor del Alumno en la DB
-        alumnoRepository.flush();
         //Devuelvo un ok 200 con el alumno
-        return ResponseEntity.ok(alumno);
+        return ResponseEntity.ok(aluViejo.get());
     }
 
     @DeleteMapping("/api/Alumnos/BorrarAlumno/{alumnoId}")

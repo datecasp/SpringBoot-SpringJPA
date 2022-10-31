@@ -43,12 +43,6 @@ public class Alumno
     {
         return alumnoId;
     }
-
-    /*public void setId(Long id)
-    {
-        this.alumnoId = id;
-    }*/
-
     public String getNombre()
     {
         return nombre;
