@@ -50,11 +50,11 @@ public class CursoController
      *
      *  Devuelve un ResponseEntity<Curso>
      **/
-    @GetMapping("/api/Cursos/CursoPorId/{id}")
+    @GetMapping("/api/Cursos/CursoPorId/{cursoId}")
     @ApiOperation("Devuelve un curso por su Id")
-    public ResponseEntity<Curso> FindById(@PathVariable Long id) {
+    public ResponseEntity<Curso> FindById(@PathVariable Long cursoId) {
 
-        Optional<Curso> cursoOpt= cursoRepository.findById(id);
+        Optional<Curso> cursoOpt= cursoRepository.findById(cursoId);
         if(cursoOpt.isPresent())
         {
             return ResponseEntity.ok(cursoOpt.get());
@@ -87,7 +87,7 @@ public class CursoController
             {
                 if(alu.getCurso().getId() == cursoId){aluList.add(alu);}
             }
-            if(aluList.isEmpty()){return ResponseEntity.notFound().build();}
+            if(aluList.isEmpty()){return ResponseEntity.noContent().build();}
             return ResponseEntity.ok(aluList);
         }
         else
@@ -150,17 +150,17 @@ public class CursoController
         return ResponseEntity.ok(cursoViejo.get());
     }
 
-    @DeleteMapping("/api/Cursos/BorrarCurso/{id}")
+    @DeleteMapping("/api/Cursos/BorrarCurso/{cursoId}")
     @ApiOperation("Borra un curso dado su Id")
-    public ResponseEntity<Curso> DeleteCurso(@PathVariable Long id)
+    public ResponseEntity<Curso> DeleteCurso(@PathVariable Long cursoId)
     {
         //Si no existe el curso, 404
-        if(!cursoRepository.existsById(id))
+        if(!cursoRepository.existsById(cursoId))
         {
             return ResponseEntity.notFound().build();
         }
         //Si existe el curso, lo borramos
-        cursoRepository.deleteById(id);
+        cursoRepository.deleteById(cursoId);
         //Devolvemos No content 204
         return ResponseEntity.noContent().build();
     }
