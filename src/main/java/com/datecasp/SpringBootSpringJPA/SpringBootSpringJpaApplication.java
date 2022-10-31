@@ -18,7 +18,9 @@ public class SpringBootSpringJpaApplication {
 		AlumnoRepository alumnosRepo = context.getBean(AlumnoRepository.class);
 		CursoRepository cursoRepo = context.getBean(CursoRepository.class);
 
-		new SeederDB(alumnosRepo, cursoRepo);
+		//Si alumnosRepo no tiene alumnos, usamos el Seeder
+		//Si tiene, no usamos el Seeder para no cambiar la BD
+		if (alumnosRepo.count() == 0){new SeederDB(alumnosRepo, cursoRepo);}
 	}
 
 }

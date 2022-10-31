@@ -2,7 +2,9 @@ package com.datecasp.SpringBootSpringJPA.controllers;
 
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
+import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +16,13 @@ public class AlumnoController
 {
     //Atributo para tener acceso al contexto
     private AlumnoRepository alumnoRepository;
+    private CursoRepository cursoRepository;
 
     //Constructor con el contexto inyectado
-    public AlumnoController(AlumnoRepository alumnoRepository)
+    public AlumnoController(AlumnoRepository alumnoRepository, CursoRepository cursoRepository)
     {
         this.alumnoRepository = alumnoRepository;
+        this.cursoRepository = cursoRepository;
     }
 
     /**
@@ -66,20 +70,14 @@ public class AlumnoController
      **/
     @PostMapping("/api/Alumnos/CrearAlumno")
     @ApiOperation("Crea un alumno nuevo")
-    public ResponseEntity<Alumno> CreateAlumno(@RequestBody Alumno alumno)
+    public ResponseEntity<Alumno> CreateAlumno(Long cursoId, @RequestBody Alumno alumno)
     {
-        /*
-        Añadir el curso al que se apunta aquí o en un PUT especifico
-
-        Apuntar alumno a curso
-
-         */
         //Si meten id, badrequest 400
         if (alumno.getId() != null)
         {
             return ResponseEntity.badRequest().build();
         }
-
+        alumno.setCurso(cursoRepository.getById(cursoId));
         Alumno result = alumnoRepository.save(alumno);
 
         return ResponseEntity.ok(result);
