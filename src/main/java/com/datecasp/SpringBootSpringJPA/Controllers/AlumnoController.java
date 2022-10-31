@@ -83,7 +83,7 @@ public class AlumnoController
      *  Devuelve un ResponseEntity<Alumno>
      **/
     @PutMapping("/api/Alumnos/ActualizarAlumno")
-    public ResponseEntity<Alumno> Updatelumnos(@RequestBody Alumno alumno)
+    public ResponseEntity<Alumno> UpdateAlumno(@RequestBody Alumno alumno)
     {
         //Si no existe el id, no es PUT si no POST 400
         if(alumno.getId() == null)

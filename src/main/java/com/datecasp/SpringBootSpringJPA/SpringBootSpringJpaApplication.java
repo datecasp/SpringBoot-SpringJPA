@@ -1,7 +1,9 @@
 package com.datecasp.SpringBootSpringJPA;
 
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
+import com.datecasp.SpringBootSpringJPA.helpers.SeederDB;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
+import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -14,11 +16,9 @@ public class SpringBootSpringJpaApplication {
 		ApplicationContext context = SpringApplication.run(SpringBootSpringJpaApplication.class, args);
 
 		AlumnoRepository alumnosRepo = context.getBean(AlumnoRepository.class);
+		CursoRepository cursoRepo = context.getBean(CursoRepository.class);
 
-		alumnosRepo.save(new Alumno("Alberto", 1));
-		alumnosRepo.save(new Alumno("Juan", 1));
-		alumnosRepo.save(new Alumno("Federico", 2));
-
+		new SeederDB(alumnosRepo, cursoRepo);
 	}
 
 }

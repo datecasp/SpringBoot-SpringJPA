@@ -1,7 +1,10 @@
 package com.datecasp.SpringBootSpringJPA.entities;
 
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "Alumnos")
 public class Alumno
@@ -9,13 +12,20 @@ public class Alumno
     //Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "alumnoId", nullable = false)
+    private Long alumnoId;
+    @Column(name = "nombre")
     private String nombre;
-    private Integer curso;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cursoId", nullable=false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Curso curso;
 
     //Constructores
 
-    public Alumno(String nombre, Integer curso)
+    public Alumno(String nombre, Curso curso)
     {
         this.nombre = nombre;
         this.curso = curso;
@@ -27,12 +37,12 @@ public class Alumno
 
     public Long getId()
     {
-        return id;
+        return alumnoId;
     }
 
     public void setId(Long id)
     {
-        this.id = id;
+        this.alumnoId = id;
     }
 
     public String getNombre()
@@ -45,12 +55,12 @@ public class Alumno
         this.nombre = nombre;
     }
 
-    public Integer getCurso()
+    public Curso getCurso()
     {
         return curso;
     }
 
-    public void setCurso(Integer curso)
+    public void setCurso(Curso curso)
     {
         this.curso = curso;
     }
@@ -61,7 +71,7 @@ public class Alumno
     public String toString()
     {
         return "Alumno{" +
-                "_id=" + id +
+                "_id=" + alumnoId +
                 ", _nombre='" + nombre + '\'' +
                 ", _curso=" + curso +
                 '}';
