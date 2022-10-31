@@ -4,6 +4,9 @@ import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import com.datecasp.SpringBootSpringJPA.entities.Curso;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
+import io.swagger.annotations.ApiOperation;
+import jdk.jfr.Name;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +24,6 @@ public class CursoController
     private AlumnoRepository alumnoRepository;
 
     //Constructor con el contexto inyectado
-    //public CursoController(CursoRepository cursoRepository)
-    {
-        this.cursoRepository = cursoRepository;
-    }
-
     public CursoController(CursoRepository cursoRepository, AlumnoRepository alumnoRepository)
     {
         this.cursoRepository = cursoRepository;
@@ -40,7 +38,9 @@ public class CursoController
      *  Devuelve una lista con todos los alumnos
      **/
     @GetMapping("/api/Cursos/TodosLosCursos")
+    @ApiOperation("Devuelve todos los cursos")
     public List<Curso> FindAll()
+
     {
         return cursoRepository.findAll();
     }
@@ -53,6 +53,7 @@ public class CursoController
      *  Devuelve un ResponseEntity<Alumno>
      **/
     @GetMapping("/api/Cursos/CursoPorId/{id}")
+    @ApiOperation("Devuelve un curso por su Id")
     public ResponseEntity<Curso> FindById(@PathVariable Long id) {
 
         Optional<Curso> cursoOpt= cursoRepository.findById(id);
@@ -76,6 +77,7 @@ public class CursoController
      *  return ResponseEntity<List<Alumno>>
      */
     @GetMapping("/api/Cursos/AlumnadoCurso/{cursoId}")
+    @ApiOperation("Devuelve todo el alumnado de un curso, dado su Id")
     public ResponseEntity<List<Alumno>> getAlumnadoCurso(@PathVariable Long cursoId )
     {
         Optional<List<Alumno>> aluListOpt= Optional.of(alumnoRepository.findAll());
@@ -104,6 +106,7 @@ public class CursoController
      *  Devuelve un ResponseEntity<Curso>
      **/
     @PostMapping("/api/Cursos/CrearCurso")
+    @ApiOperation("Crea un curso")
     public ResponseEntity<Curso> CreateCurso(@RequestBody Curso curso)
     {
         //Si meten id, badrequest 400
@@ -124,26 +127,30 @@ public class CursoController
      *
      *  Devuelve un ResponseEntity<Curso>
      **/
-    @PutMapping("/api/Cursos/ActualizarCurso")
-    public ResponseEntity<Curso> UpdateCurso(@RequestBody Curso curso)
+    @PutMapping("/api/Cursos/ActualizarCurso/{cursoId}")
+    @ApiOperation("Actualiza un curso, las ids deben coincidir")
+    public ResponseEntity<Curso> UpdateCurso(@PathVariable Long cursoId, @RequestBody Curso curso)
     {
+        //Comprobamos los Ids
+        if (cursoId != curso.getCursoId()){ return ResponseEntity.badRequest().build(); }
         //Si no existe el id, no es PUT si no POST 400
         if(curso.getCursoId() == null)
         {
             return ResponseEntity.badRequest().build();
         }
-        //Si el alumno no existe, no es PUT si no POST 404
+        //Si el curso no existe, no es PUT si no POST 404
         if(!cursoRepository.existsById(curso.getCursoId()))
         {
             return ResponseEntity.notFound().build();
         }
-        //Si el alumno existe, lo actualizamos en bbdd
+        //Si el curso existe, lo actualizamos en bbdd
         Curso result = cursoRepository.save(curso);
         //Devuelvo un ok 200 con el alumno
         return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/api/Cursos/BorrarCurso/{id}")
+    @ApiOperation("Borra un curso dado su Id")
     public ResponseEntity<Curso> DeleteCurso(@PathVariable Long id)
     {
         //Si no existe el curso, 404

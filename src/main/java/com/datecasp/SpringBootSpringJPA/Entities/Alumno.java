@@ -18,7 +18,7 @@ public class Alumno
     private String nombre;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "cursoId", nullable=false)
+    @JoinColumn(name = "cursoId")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Curso curso;
@@ -40,10 +40,10 @@ public class Alumno
         return alumnoId;
     }
 
-    public void setId(Long id)
+    /*public void setId(Long id)
     {
         this.alumnoId = id;
-    }
+    }*/
 
     public String getNombre()
     {

@@ -35,10 +35,10 @@ public class Curso
     //getters and setters
     public Long getCursoId(){return cursoId;}
 
-    public void setId(Long id)
+    /*public void setCursoId(Long id)
     {
         this.cursoId = id;
-    }
+    }*/
 
     public String getCurso(){return curso;}
 
