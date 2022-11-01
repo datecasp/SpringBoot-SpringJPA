@@ -117,6 +117,33 @@ public class CursoController
     }
 
     /**
+     *  GET Buscar todos las asignaturas de un curso
+     *
+     * @param cursoId, activo
+     *
+     *  http://localhost:8080/api/Cursos/AsignaturasCurso/{cursoId}
+     *
+     *  Utiliza el cursoId para devolver las asignaturas de ese curso
+     *
+     *  El param activo se usa para filtrar la respuesta por
+     *
+     *        true -> devuelve sólo las asignaturas actualmente activos
+     *
+     *        false -> Añade asignaturas actuales o no
+     *
+     *  return ResponseEntity<List<Asignaturas>>
+     */
+    @GetMapping("/api/Cursos/AsignaturasCurso/{cursoId}")
+    @ApiOperation("Devuelve todas las asignaturas de un curso, dada su Id")
+    public ResponseEntity<List<Asignatura>> getAsignaturasCurso(@PathVariable Long cursoId, @ApiParam(value = "Sólo actual") Boolean activo)
+    {
+        if(!cursoRepository.existsById(cursoId)){return ResponseEntity.badRequest().build();}
+        List<Asignatura> asignaturaList= asignaturaRepository.findAsignaturasByCursosCursoId(cursoId);
+
+        return ResponseEntity.ok(asignaturaList);
+    }
+
+    /**
      *  Post Un curso concreto
      *
      *  http://localhost:8080/api/Cursos/CrearCurso
@@ -172,7 +199,11 @@ public class CursoController
     }
 
 
-
+    /**
+     *  DELETE Borrar cursopor su Id
+     * @param cursoId
+     * @return 204 NoContent
+     */
     @DeleteMapping("/api/Cursos/BorrarCurso/{cursoId}")
     @ApiOperation("Borra un curso dado su Id")
     public ResponseEntity<Curso> DeleteCurso(@PathVariable Long cursoId)

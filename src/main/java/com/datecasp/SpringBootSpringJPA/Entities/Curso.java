@@ -73,7 +73,7 @@ public class Curso
 
     public void removeAsignatura(Long asignaturaId)
     {
-        Asignatura asignatura = this.asignaturas.stream().filter(t -> t.getAsignaturaId() == asignaturaId).findFirst().orElse(null);
+        Asignatura asignatura = this.asignaturas.stream().filter(t -> t.getId() == asignaturaId).findFirst().orElse(null);
         if(asignatura != null)
         {
             this.asignaturas.remove(asignatura);

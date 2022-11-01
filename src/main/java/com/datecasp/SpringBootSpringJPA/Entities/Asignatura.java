@@ -40,7 +40,7 @@ public class Asignatura
 
     //getters y setters
 
-    public Long getAsignaturaId()
+    public Long getId()
     {
         return asignaturaId;
     }

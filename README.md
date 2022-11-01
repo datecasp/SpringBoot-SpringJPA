@@ -87,9 +87,10 @@ dentro del subpaquete `config`.
 [ Agendado : ]
 
 - Creación de capa de abstracción mediante servicios
-- Implementación de capa de seguridad (probablemente con JWT)
+- Implementación de capa de seguridad (JWT)
 - Desarrollo de UI
 - Limpieza y optimización de código
+- Cambiar lógicas de borrado por flags 
 
  
  
