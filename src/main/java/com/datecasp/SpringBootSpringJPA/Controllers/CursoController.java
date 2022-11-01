@@ -3,6 +3,7 @@ package com.datecasp.SpringBootSpringJPA.controllers;
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
 import com.datecasp.SpringBootSpringJPA.entities.Asignatura;
 import com.datecasp.SpringBootSpringJPA.entities.Curso;
+import com.datecasp.SpringBootSpringJPA.helpers.Enumerations;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.AsignaturaRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
@@ -141,6 +142,30 @@ public class CursoController
         List<Asignatura> asignaturaList= asignaturaRepository.findAsignaturasByCursosCursoId(cursoId);
 
         return ResponseEntity.ok(asignaturaList);
+    }
+
+    /**
+     * GET Devuelve todos los cursos de un nivel dado
+     *
+     * @param nivel -> proviene de helpers.Enumerations.nivelCurso
+     *
+     * @return ResponseEntity<List<Curso>>
+     */
+    @GetMapping("/api/Cursos/CursosPorNivel/{nivel}")
+    @ApiOperation("Devuelve todos los cursos de un nivel")
+    public ResponseEntity<List<Curso>> getCursosPorNivel(@PathVariable Enumerations.nivelCurso nivel)
+    {
+        Optional<List<Curso>> listaCursosOpt = Optional.of(cursoRepository.findAll());
+        List<Curso> listaCursos = new ArrayList<>();
+
+        if(!listaCursosOpt.isPresent()){return ResponseEntity.noContent().build();}
+
+        for(Curso curso : listaCursosOpt.get())
+        {
+            if (curso.getNivelCurso().equals(nivel)){listaCursos.add(curso);}
+        }
+
+        return ResponseEntity.ok(listaCursos);
     }
 
     /**
