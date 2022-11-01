@@ -223,15 +223,41 @@ public class CursoController
         return ResponseEntity.ok(cursoViejo.get());
     }
 
+    /**
+     *  Da de alta un curso por su id
+     *
+     * @param cursoId
+     *
+     * @return ResponseEntity<Curso>
+     */
+    @PutMapping("/api/Cursos/DarDeAltaCurso/{cursoId}")
+    @ApiOperation("Da de alta un curso, por su Id")
+    public ResponseEntity<Curso> DaDeAltaCurso(@PathVariable Long cursoId)
+    {
+        Optional<Curso> cursoOpt = cursoRepository.findById(cursoId);
+
+        //Si no existe el curso, 404
+        if(!cursoOpt.isPresent())
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        //Seteamos flag activo como true
+        cursoOpt.get().setActivo(true);
+        //Guardamos en la BD
+        cursoRepository.flush();
+        //Devolvemos No content 204
+        return ResponseEntity.ok().build();
+    }
 
     /**
-     *  DELETE Borrar cursopor su Id
+     *  Da de baja un curso por su Id
      * @param cursoId
-     * @return 204 NoContent
+     * @return ResponseEntity<Curso>
      */
-    @DeleteMapping("/api/Cursos/BorrarCurso/{cursoId}")
-    @ApiOperation("Pone inactivo un curso dado su Id y su alumnado")
-    public ResponseEntity<Curso> DeleteCurso(@PathVariable Long cursoId)
+    @PutMapping("/api/Cursos/DarDeBajaCurso/{cursoId}")
+    @ApiOperation("Da de baja un curso (por su Id) y su alumnado")
+    public ResponseEntity<Curso> DarDeBajaCurso(@PathVariable Long cursoId)
     {
         Optional<Curso> cursoOpt = cursoRepository.findById(cursoId);
         Optional<List<Alumno>> listaAlumnosOpt = Optional.of(alumnoRepository.findAll());
