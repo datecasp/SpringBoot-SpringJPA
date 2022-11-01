@@ -90,8 +90,6 @@ dentro del subpaquete `config`.
 - Implementación de capa de seguridad (JWT)
 - Desarrollo de UI
 - Limpieza y optimización de código
-- Cambiar lógicas de borrado por flags 
-
  
  
         
