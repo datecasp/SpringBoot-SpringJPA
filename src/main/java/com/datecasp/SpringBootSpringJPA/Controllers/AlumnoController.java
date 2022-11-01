@@ -166,7 +166,7 @@ public class AlumnoController
         Optional<Alumno> alumno = alumnoRepository.findById(alumnoId);
         Optional<Curso> curso = cursoRepository.findById(cursoId);
 
-        if(!alumno.isPresent()||!curso.isPresent()){return ResponseEntity.badRequest().build();}
+        if(!alumno.isPresent()||!curso.isPresent()||!curso.get().getActivo()){return ResponseEntity.badRequest().build();}
         //Seteamos Activo a true por si no lo está
         alumno.get().setActivo(true);
         //Cargamos el curso nuevo en el Alumno
@@ -176,9 +176,19 @@ public class AlumnoController
 
         return ResponseEntity.ok(alumno.get());
     }
-    @DeleteMapping("/api/Alumnos/BorrarAlumno/{alumnoId}")
-    @ApiOperation("Inactiva un alumno, dada su id")
-    public ResponseEntity<Alumno> DeleteAlumno(@PathVariable Long alumnoId)
+
+    /**
+     * Da de baja a un alumno
+     *
+     * Pone su flag "activo" a false
+     *
+     * @param alumnoId
+     *
+     * @return ResponseEntity<Alumno>
+     */
+    @PutMapping("/api/Alumnos/DarDeBajaAlumno/{alumnoId}")
+    @ApiOperation("Da de baja a un alumno, por su id")
+    public ResponseEntity<Alumno> DarDeBajaAlumno(@PathVariable Long alumnoId)
     {
         Optional<Alumno> aluViejo = alumnoRepository.findById(alumnoId);
 
