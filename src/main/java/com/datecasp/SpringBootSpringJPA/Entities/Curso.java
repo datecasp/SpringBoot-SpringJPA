@@ -2,6 +2,8 @@ package com.datecasp.SpringBootSpringJPA.entities;
 
 import com.datecasp.SpringBootSpringJPA.helpers.Enumerations;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Cursos")
@@ -18,6 +20,17 @@ public class Curso
     private String descripcion;
     @Column(name = "nivelCurso")
     private Enumerations.nivelCurso nivelCurso;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade =
+            {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            })
+        @JoinTable(name = "curso_asignaturas",
+            joinColumns =  {@JoinColumn(name = "cursoId")},
+            inverseJoinColumns = {@JoinColumn(name = "asignaturaId")})
+    private Set<Asignatura> asignaturas = new HashSet<>();
 
     //constructors
 
