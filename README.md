@@ -4,7 +4,7 @@ Ejemplo de uso del framework Spring Boot Data JPA para el desarrollo de una web
 
 API REST para la gestión de una Base de Datos.
 
-Simula el gestor de datos de una academía donde manejan datos de cursos ofrecidos,
+Simula el gestor de datos de una academia, donde van a utilizar datos de cursos ofrecidos,
 
 alumnos apuntados a algún curso y asignaturas que se imparten, pudiendo realizar
 
@@ -42,7 +42,7 @@ la *anotación* @Entity. Se definen en sus respectivas clases en el subpaquete
 
 en el subpaquete `repositories`, para desacoplar el código.
 
-Además, el subpàquete `controllers` incluye los controladores, indicados con la
+Además, el subpaquete `controllers` incluye los controladores, indicados con la
 
 *anotación* @RestController, de la API para cada una de estas entidades. De momento
 
@@ -86,7 +86,7 @@ dentro del subpaquete `config`.
 [ Agendado : ]
 
 - Creación de capa de abstracción mediante servicios
-- Implementación de capa de seguridad (probablemente con JWT)
+- Implementación de capa de seguridad (JWT)
 - Desarrollo de UI
 - Limpieza y optimización de código
 
