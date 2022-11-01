@@ -15,8 +15,7 @@ las entidades así como las operaciones están explicadas más adelante.
 [ Tecnologías usadas : ]
 
 - IntelliJ 2022.2
-- Plugin de Maven versión 2.5.5
-- Spring Boot
+- Spring Boot 2.5.5
 - Java 17
 - Swagger 2 para documentación de la API
 - MSSQL server / H2
