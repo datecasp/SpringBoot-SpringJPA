@@ -59,4 +59,14 @@ public class Curso
     public Enumerations.nivelCurso getNivelCurso(){return nivelCurso;}
 
     public void setNivelCurso(Enumerations.nivelCurso nivelCurso){this.nivelCurso = nivelCurso;}
+
+    public Set<Asignatura> getAsignaturas()
+    {
+        return asignaturas;
+    }
+
+    public void setAsignaturas(Set<Asignatura> asignaturas)
+    {
+        this.asignaturas = asignaturas;
+    }
 }

@@ -65,7 +65,17 @@ public class Asignatura
         this.descripcion = descripcion;
     }
 
-    //ToString
+    public Set<Curso> getCursos()
+    {
+        return cursos;
+    }
+
+    public void setCursos(Set<Curso> cursos)
+    {
+        this.cursos = cursos;
+    }
+
+//ToString
 
     @Override
     public String toString()
