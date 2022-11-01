@@ -2,6 +2,8 @@ package com.datecasp.SpringBootSpringJPA.entities;
 
 import com.datecasp.SpringBootSpringJPA.helpers.Enumerations;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Cursos")
@@ -19,6 +21,19 @@ public class Curso
     @Column(name = "nivelCurso")
     private Enumerations.nivelCurso nivelCurso;
 
+    @Column(name = "activo")
+    private Boolean activo;
+    @ManyToMany(fetch = FetchType.LAZY,
+        cascade =
+            {
+                CascadeType.PERSIST,
+                CascadeType.MERGE
+            })
+        @JoinTable(name = "curso_asignaturas",
+            joinColumns =  {@JoinColumn(name = "cursoId")},
+            inverseJoinColumns = {@JoinColumn(name = "asignaturaId")})
+    private Set<Asignatura> asignaturas = new HashSet<>();
+
     //constructors
 
     //Full atributes constructor
@@ -27,6 +42,7 @@ public class Curso
         this.curso = curso;
         this.descripcion = descripcion;
         this.nivelCurso = nivelCurso;
+        this.activo = true;
     }
 
     //empty constructor
@@ -46,4 +62,28 @@ public class Curso
     public Enumerations.nivelCurso getNivelCurso(){return nivelCurso;}
 
     public void setNivelCurso(Enumerations.nivelCurso nivelCurso){this.nivelCurso = nivelCurso;}
+
+    public Boolean getActivo(){return activo;}
+
+    public void setActivo(Boolean activo){this.activo = activo;}
+    public Set<Asignatura> getAsignaturas()
+    {
+        return asignaturas;
+    }
+
+    public void setAsignaturas(Asignatura asignatura)
+    {
+        this.asignaturas.add(asignatura);
+        asignatura.getCursos().add(this);
+    }
+
+    public void removeAsignatura(Long asignaturaId)
+    {
+        Asignatura asignatura = this.asignaturas.stream().filter(t -> t.getId() == asignaturaId).findFirst().orElse(null);
+        if(asignatura != null)
+        {
+            this.asignaturas.remove(asignatura);
+            asignatura.getCursos().remove(this);
+        }
+    }
 }

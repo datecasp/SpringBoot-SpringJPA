@@ -28,7 +28,6 @@ las entidades así como las operaciones están explicadas más adelante.
     * spring-boot-starter-test
     * springfox-boot-starter -> para el uso de Swagger
     * mssql-jdbc -> para MSSQL -- Config en application.properties
-
         * Si no se configura MSSQL se usa H2 por defecto
 
 [ Entidades y Relaciones : ]
@@ -91,6 +90,4 @@ dentro del subpaquete `config`.
 - Desarrollo de UI
 - Limpieza y optimización de código
 
- 
- 
         
