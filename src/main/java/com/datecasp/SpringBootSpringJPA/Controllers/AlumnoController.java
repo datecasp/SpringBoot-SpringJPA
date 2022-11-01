@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +32,41 @@ public class AlumnoController
      *
      *  http://localhost:8080/api/Alumnos/TodosLosAlumnos
      *
-     *  Devuelve una lista con todos los alumnos
+     *  El param activo se usa para filtrar la respuesta por
+     *
+     *            true -> devuelve sólo los alumnos actuales con curso
+     *
+     *            false -> devuelve el alumnado incluso antiguo
+     *
+     *  Devuelve ResponseEntity<List<Alumnos>>
      **/
     @GetMapping("/api/Alumnos/TodosLosAlumnos")
     @ApiOperation("Devuelve todo el alumnado")
-    public List<Alumno> FindAll()
+    public ResponseEntity<List<Alumno>> FindAll(@ApiParam(value = "Sólo actual") Boolean activo)
     {
-        return alumnoRepository.findAll();
+        Optional<List<Alumno>> alumnos = Optional.of(alumnoRepository.findAll());
+        List<Alumno> listaAlumnos = new ArrayList<>();
+
+        if(alumnos.isPresent())
+        {
+            for (Alumno alu : alumnos.get())
+            {
+                if (!activo)
+                {
+                    return ResponseEntity.ok(alumnos.get());
+                }
+                else if (alu.getActivo())
+                {
+                    listaAlumnos.add(alu);
+                }
+            }
+            if(listaAlumnos.isEmpty()){return ResponseEntity.noContent().build();}
+            return ResponseEntity.ok(listaAlumnos);
+        }
+        else
+        {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
