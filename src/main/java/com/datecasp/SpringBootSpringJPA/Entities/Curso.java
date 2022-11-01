@@ -21,6 +21,8 @@ public class Curso
     @Column(name = "nivelCurso")
     private Enumerations.nivelCurso nivelCurso;
 
+    @Column(name = "activo")
+    private Boolean activo;
     @ManyToMany(fetch = FetchType.LAZY,
         cascade =
             {
@@ -40,6 +42,7 @@ public class Curso
         this.curso = curso;
         this.descripcion = descripcion;
         this.nivelCurso = nivelCurso;
+        this.activo = true;
     }
 
     //empty constructor
@@ -60,6 +63,9 @@ public class Curso
 
     public void setNivelCurso(Enumerations.nivelCurso nivelCurso){this.nivelCurso = nivelCurso;}
 
+    public Boolean getActivo(){return activo;}
+
+    public void setActivo(Boolean activo){this.activo = activo;}
     public Set<Asignatura> getAsignaturas()
     {
         return asignaturas;

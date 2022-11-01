@@ -230,16 +230,30 @@ public class CursoController
      * @return 204 NoContent
      */
     @DeleteMapping("/api/Cursos/BorrarCurso/{cursoId}")
-    @ApiOperation("Borra un curso dado su Id")
+    @ApiOperation("Pone inactivo un curso dado su Id y su alumnado")
     public ResponseEntity<Curso> DeleteCurso(@PathVariable Long cursoId)
     {
+        Optional<Curso> cursoOpt = cursoRepository.findById(cursoId);
+        Optional<List<Alumno>> listaAlumnosOpt = Optional.of(alumnoRepository.findAll());
+
         //Si no existe el curso, 404
-        if(!cursoRepository.existsById(cursoId))
+        if(!cursoOpt.isPresent())
         {
             return ResponseEntity.notFound().build();
         }
-        //Si existe el curso, lo borramos
-        cursoRepository.deleteById(cursoId);
+        //Seteamos flag activo como false del curso
+        cursoOpt.get().setActivo(false);
+        //Setear flag activo a false de los alumnos de ese curso
+        for(Alumno alu : listaAlumnosOpt.get())
+        {
+            if(alu.getCurso().getId() == cursoId)
+            {
+                alu.setActivo(false);
+            }
+        }
+        //Guardamos en la BD
+        alumnoRepository.flush();
+        cursoRepository.flush();
         //Devolvemos No content 204
         return ResponseEntity.noContent().build();
     }

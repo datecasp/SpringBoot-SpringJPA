@@ -166,7 +166,7 @@ public class AlumnoController
         Optional<Alumno> alumno = alumnoRepository.findById(alumnoId);
         Optional<Curso> curso = cursoRepository.findById(cursoId);
 
-        if(!alumno.isPresent()||!curso.isPresent()){return ResponseEntity.badRequest().build();}
+        if(!alumno.isPresent()||!curso.isPresent()||!curso.get().getActivo()){return ResponseEntity.badRequest().build();}
         //Seteamos Activo a true por si no lo está
         alumno.get().setActivo(true);
         //Cargamos el curso nuevo en el Alumno
