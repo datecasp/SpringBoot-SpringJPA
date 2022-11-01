@@ -65,8 +65,19 @@ public class Curso
         return asignaturas;
     }
 
-    public void setAsignaturas(Set<Asignatura> asignaturas)
+    public void setAsignaturas(Asignatura asignatura)
     {
-        this.asignaturas = asignaturas;
+        this.asignaturas.add(asignatura);
+        asignatura.getCursos().add(this);
+    }
+
+    public void removeAsignatura(Long asignaturaId)
+    {
+        Asignatura asignatura = this.asignaturas.stream().filter(t -> t.getAsignaturaId() == asignaturaId).findFirst().orElse(null);
+        if(asignatura != null)
+        {
+            this.asignaturas.remove(asignatura);
+            asignatura.getCursos().remove(this);
+        }
     }
 }

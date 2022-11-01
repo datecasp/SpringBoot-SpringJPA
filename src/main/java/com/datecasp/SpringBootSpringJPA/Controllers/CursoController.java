@@ -1,8 +1,10 @@
 package com.datecasp.SpringBootSpringJPA.controllers;
 
 import com.datecasp.SpringBootSpringJPA.entities.Alumno;
+import com.datecasp.SpringBootSpringJPA.entities.Asignatura;
 import com.datecasp.SpringBootSpringJPA.entities.Curso;
 import com.datecasp.SpringBootSpringJPA.repositories.AlumnoRepository;
+import com.datecasp.SpringBootSpringJPA.repositories.AsignaturaRepository;
 import com.datecasp.SpringBootSpringJPA.repositories.CursoRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +24,14 @@ public class CursoController
     private CursoRepository cursoRepository;
     //Para poder buscar alumndao desde un Curso
     private AlumnoRepository alumnoRepository;
+    private AsignaturaRepository asignaturaRepository;
 
     //Constructor con el contexto inyectado
-    public CursoController(CursoRepository cursoRepository, AlumnoRepository alumnoRepository)
+    public CursoController(CursoRepository cursoRepository, AlumnoRepository alumnoRepository, AsignaturaRepository asignaturaRepository)
     {
         this.cursoRepository = cursoRepository;
         this.alumnoRepository = alumnoRepository;
+        this.asignaturaRepository = asignaturaRepository;
     }
 
     /**
@@ -156,14 +161,17 @@ public class CursoController
             cursoViejo.get().setCurso(curso.getCurso());
             cursoViejo.get().setDescripcion(curso.getDescripcion());
             cursoViejo.get().setNivelCurso(curso.getNivelCurso());
+            //cursoViejo.get().setAsignaturas(curso.getAsignaturas());
 
             //Actualizamos el valor del Curso en la DB
-            alumnoRepository.flush();
+            cursoRepository.flush();
         }
 
         //Devuelvo un ok 200 con el curso
         return ResponseEntity.ok(cursoViejo.get());
     }
+
+
 
     @DeleteMapping("/api/Cursos/BorrarCurso/{cursoId}")
     @ApiOperation("Borra un curso dado su Id")
