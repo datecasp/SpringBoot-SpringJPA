@@ -39,7 +39,7 @@ public class AsignaturaController
      *
      *  Devuelve una lista con todas las asignaturas
      **/
-    @GetMapping("/api/Asignaturas/TodasLasASignaturas")
+    @GetMapping("/User/Asignaturas/TodasLasASignaturas")
     @ApiOperation("Devuelve todas las asignaturas")
     public List<Asignatura> FindAll()
 
@@ -54,7 +54,7 @@ public class AsignaturaController
      *
      *  Devuelve un ResponseEntity<Asignatura>
      **/
-    @GetMapping("/api/Asignaturas/AsignaturaPorId/{asignaturaId}")
+    @GetMapping("/User/Asignaturas/AsignaturaPorId/{asignaturaId}")
     @ApiOperation("Devuelve una asignatura por su Id")
     public ResponseEntity<Asignatura> FindById(@PathVariable Long asignaturaId) {
 
@@ -87,7 +87,7 @@ public class AsignaturaController
      *
      *  return ResponseEntity<List<Curso>>
      */
-    @GetMapping("/api/Asignaturas/CursosAsignatura/{asignaturaId}")
+    @GetMapping("/User/Asignaturas/CursosAsignatura/{asignaturaId}")
     @ApiOperation("Devuelve todos cursos de una asignatura, dada su Id")
     public ResponseEntity<List<Curso>> getCursosAsignatura(@PathVariable Long asignaturaId, @ApiParam(value = "Sólo actual") Boolean activo)
     {
@@ -101,7 +101,7 @@ public class AsignaturaController
      PUT Modifica Asignatura por su Id
 
      */
-    @PutMapping("/api/Asignaturas/ModificarAsignatura/{asignaturaId}")
+    @PutMapping("/Admin/Asignaturas/ModificarAsignatura/{asignaturaId}")
     @ApiOperation("Modifica una asignatura por su Id")
     public ResponseEntity<Asignatura> ModificarAsignatura(Long asignaturaId,@ApiParam(value = "Asignatura a modificar") @RequestBody Asignatura asignatura)
     {
@@ -129,7 +129,7 @@ public class AsignaturaController
      PUT Añade Asignatura a un curso
 
      */
-    @PutMapping("/api/Asignaturas/AñadirAsignaturasACurso/{cursoId}")
+    @PutMapping("/Admin/Asignaturas/AñadirAsignaturasACurso/{cursoId}")
     @ApiOperation("Añade una lista de asignaturas a un curso")
     public ResponseEntity<Curso> AddAsignaturaACurso(@PathVariable Long cursoId, @ApiParam(value = "Lista de AsignaturaId´s") @RequestBody LinkedList<Long> asignaturaIds)
     {
@@ -163,7 +163,7 @@ public class AsignaturaController
     /**
      *  Borrar asignatura de curso
      */
-    @PutMapping("/api/Asignaturas/{asignaturaId}/QuitarAsignaturaDeCurso/{cursoId}")
+    @PutMapping("/Admin/Asignaturas/{asignaturaId}/QuitarAsignaturaDeCurso/{cursoId}")
     @ApiOperation(value = "Quitar asignatura de curso")
     public ResponseEntity<Curso> RemoveAsignaturaDeCurso(@PathVariable(value = "cursoId") Long cursoId, @PathVariable(value = "asignaturaId") Long asignaturaId)
     {
@@ -185,7 +185,7 @@ public class AsignaturaController
     /**
      *   POST Crear asigantura
      */
-    @PostMapping("/api/Asignaturas/CrearAsignatura")
+    @PostMapping("/Admin/Asignaturas/CrearAsignatura")
     @ApiOperation(value = "Crea una nueva asignatura")
     public ResponseEntity<Asignatura> CrearAsignatura(@RequestBody Asignatura asignatura)
     {
@@ -205,7 +205,7 @@ public class AsignaturaController
      * @param asignaturaId
      * @return 204 NoContent
      */
-    @DeleteMapping("/api/Asignatura/BorrarAsignatura/{asignaturaId}")
+    @DeleteMapping("/Admin/Asignatura/BorrarAsignatura/{asignaturaId}")
     @ApiOperation("Borra una asignatura por su Id")
     public ResponseEntity<Asignatura> DeleteAsignatura(@PathVariable Long asignaturaId)
     {
