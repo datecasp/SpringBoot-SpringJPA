@@ -42,7 +42,7 @@ public class CursoController
      *
      *  Devuelve una lista con todos los cursos
      **/
-    @GetMapping("/api/Cursos/TodosLosCursos")
+    @GetMapping("/User/Cursos/TodosLosCursos")
     @ApiOperation("Devuelve todos los cursos")
     public List<Curso> FindAll()
 
@@ -57,7 +57,7 @@ public class CursoController
      *
      *  Devuelve un ResponseEntity<Curso>
      **/
-    @GetMapping("/api/Cursos/CursoPorId/{cursoId}")
+    @GetMapping("/User/Cursos/CursoPorId/{cursoId}")
     @ApiOperation("Devuelve un curso por su Id")
     public ResponseEntity<Curso> FindById(@PathVariable Long cursoId) {
 
@@ -89,7 +89,7 @@ public class CursoController
      *
      *  return ResponseEntity<List<Alumno>>
      */
-    @GetMapping("/api/Cursos/AlumnadoCurso/{cursoId}")
+    @GetMapping("/User/Cursos/AlumnadoCurso/{cursoId}")
     @ApiOperation("Devuelve todo el alumnado de un curso, dado su Id")
     public ResponseEntity<List<Alumno>> getAlumnadoCurso(@PathVariable Long cursoId, @ApiParam(value = "Sólo actual") Boolean activo)
     {
@@ -134,7 +134,7 @@ public class CursoController
      *
      *  return ResponseEntity<List<Asignaturas>>
      */
-    @GetMapping("/api/Cursos/AsignaturasCurso/{cursoId}")
+    @GetMapping("/User/Cursos/AsignaturasCurso/{cursoId}")
     @ApiOperation("Devuelve todas las asignaturas de un curso, dada su Id")
     public ResponseEntity<List<Asignatura>> getAsignaturasCurso(@PathVariable Long cursoId, @ApiParam(value = "Sólo actual") Boolean activo)
     {
@@ -151,7 +151,7 @@ public class CursoController
      *
      * @return ResponseEntity<List<Curso>>
      */
-    @GetMapping("/api/Cursos/CursosPorNivel/{nivel}")
+    @GetMapping("/User/Cursos/CursosPorNivel/{nivel}")
     @ApiOperation("Devuelve todos los cursos de un nivel")
     public ResponseEntity<List<Curso>> getCursosPorNivel(@PathVariable Enumerations.nivelCurso nivel)
     {
@@ -175,7 +175,7 @@ public class CursoController
      *
      *  Devuelve un ResponseEntity<Curso>
      **/
-    @PostMapping("/api/Cursos/CrearCurso")
+    @PostMapping("/Admin/Cursos/CrearCurso")
     @ApiOperation("Crea un curso")
     public ResponseEntity<Curso> CreateCurso(@RequestBody Curso curso)
     {
@@ -197,7 +197,7 @@ public class CursoController
      *
      *  Devuelve un ResponseEntity<Curso>
      **/
-    @PutMapping("/api/Cursos/ActualizarCurso/{cursoId}")
+    @PutMapping("/Admin/Cursos/ActualizarCurso/{cursoId}")
     @ApiOperation("Actualiza un curso")
     public ResponseEntity<Curso> UpdateCurso(@PathVariable Long cursoId, @RequestBody Curso curso)
     {
@@ -230,7 +230,7 @@ public class CursoController
      *
      * @return ResponseEntity<Curso>
      */
-    @PutMapping("/api/Cursos/DarDeAltaCurso/{cursoId}")
+    @PutMapping("/Admin/Cursos/DarDeAltaCurso/{cursoId}")
     @ApiOperation("Da de alta un curso, por su Id")
     public ResponseEntity<Curso> DaDeAltaCurso(@PathVariable Long cursoId)
     {
@@ -255,7 +255,7 @@ public class CursoController
      * @param cursoId
      * @return ResponseEntity<Curso>
      */
-    @PutMapping("/api/Cursos/DarDeBajaCurso/{cursoId}")
+    @PutMapping("/Admin/Cursos/DarDeBajaCurso/{cursoId}")
     @ApiOperation("Da de baja un curso (por su Id) y su alumnado")
     public ResponseEntity<Curso> DarDeBajaCurso(@PathVariable Long cursoId)
     {

@@ -40,7 +40,7 @@ public class AlumnoController
      *
      *  Devuelve ResponseEntity<List<Alumnos>>
      **/
-    @GetMapping("/api/Alumnos/TodosLosAlumnos")
+    @GetMapping("/User/Alumnos/TodosLosAlumnos")
     @ApiOperation("Devuelve todo el alumnado")
     public ResponseEntity<List<Alumno>> FindAll(@ApiParam(value = "Sólo actual") Boolean activo)
     {
@@ -76,7 +76,7 @@ public class AlumnoController
      *
      *  Devuelve un ResponseEntity<Alumno>
      **/
-    @GetMapping("/api/Alumnos/AlumnoPorId/{alumnoId}")
+    @GetMapping("/User/Alumnos/AlumnoPorId/{alumnoId}")
     @ApiOperation("Devuelve un alumno, dada su Id")
     public ResponseEntity<Alumno> FindById(@PathVariable Long alumnoId) {
 
@@ -98,7 +98,7 @@ public class AlumnoController
      *
      *  Devuelve un ResponseEntity<Alumno>
      **/
-    @PostMapping("/api/Alumnos/CrearAlumno")
+    @PostMapping("/Admin/Alumnos/CrearAlumno")
     @ApiOperation("Crea un alumno nuevo")
     public ResponseEntity<Alumno> CreateAlumno(Long cursoId, @RequestBody Alumno alumno)
     {
@@ -124,7 +124,7 @@ public class AlumnoController
      *
      *  Devuelve un ResponseEntity<Alumno>
      **/
-    @PutMapping("/api/Alumnos/ActualizarAlumno/{alumnoId}")
+    @PutMapping("/Admin/Alumnos/ActualizarAlumno/{alumnoId}")
     @ApiOperation("Actualiza un alumno")
     public ResponseEntity<Alumno> UpdateAlumno(@PathVariable Long alumnoId, @RequestBody Alumno alumno)
     {
@@ -159,14 +159,14 @@ public class AlumnoController
      *
      *  Devuelve un ResponseEntity<Alumno>
      **/
-    @PutMapping("/api/Alumnos/ActualizarCursoAlumno/{alumnoId}")
+    @PutMapping("/Admin/Alumnos/ActualizarCursoAlumno/{alumnoId}")
     @ApiOperation("Apuntar o cambiar de curso a un alumno")
     public ResponseEntity<Alumno> UpdateCursoAlumno(@PathVariable Long alumnoId, Long cursoId)
     {
         Optional<Alumno> alumno = alumnoRepository.findById(alumnoId);
         Optional<Curso> curso = cursoRepository.findById(cursoId);
 
-        if(!alumno.isPresent()||!curso.isPresent()||!curso.get().getActivo()){return ResponseEntity.badRequest().build();}
+        if(!alumno.isPresent()||!curso.isPresent()){return ResponseEntity.badRequest().build();}
         //Seteamos Activo a true por si no lo está
         alumno.get().setActivo(true);
         //Cargamos el curso nuevo en el Alumno
@@ -176,19 +176,9 @@ public class AlumnoController
 
         return ResponseEntity.ok(alumno.get());
     }
-
-    /**
-     * Da de baja a un alumno
-     *
-     * Pone su flag "activo" a false
-     *
-     * @param alumnoId
-     *
-     * @return ResponseEntity<Alumno>
-     */
-    @PutMapping("/api/Alumnos/DarDeBajaAlumno/{alumnoId}")
-    @ApiOperation("Da de baja a un alumno, por su id")
-    public ResponseEntity<Alumno> DarDeBajaAlumno(@PathVariable Long alumnoId)
+    @DeleteMapping("/Admin/Alumnos/BorrarAlumno/{alumnoId}")
+    @ApiOperation("Inactiva un alumno, dada su id")
+    public ResponseEntity<Alumno> DeleteAlumno(@PathVariable Long alumnoId)
     {
         Optional<Alumno> aluViejo = alumnoRepository.findById(alumnoId);
 
