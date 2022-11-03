@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("api/v1/")
 public class AlumnoController
 {
     //Atributo para tener acceso al contexto
