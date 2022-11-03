@@ -49,12 +49,7 @@
 			<artifactId>springfox-boot-starter</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		<!-- MSSQL server connection dependency -->
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+		
 		<!--Spring Security Dependency-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
