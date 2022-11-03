@@ -47,6 +47,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .withUser("jefe").password(passwordEncoder().encode("1234")).roles("ADMIN");
     }
 
+    @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception
+    {
+        return super.userDetailsServiceBean();
+    }
+
 
 //    @Bean
 //    @Override
